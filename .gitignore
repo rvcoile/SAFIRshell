@@ -1,12 +1,6 @@
-## .gitignore for SAFIRshell
+## .gitignore for SAFIRshell ##
+###############################
 
-# ignore by default
-*
-*/
-*.*
+## ignore __pycache ##
+**/__pycache__/
 
-# list files for repository
-!.gitignore
-!LICENSE
-!README.md
-!RELEASE.md
