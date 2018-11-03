@@ -44,7 +44,7 @@ SAFIRshell uses Python3.
 To run a single SAFIR calculation, use the following commands.
 
 ```sh
-python -m safirshell.mc
+python -m SAFIRshell.shell
 ```
 
 ## Authors

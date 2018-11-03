@@ -2,15 +2,13 @@
 
 ### VERSIONS
 
-**22/10/2018 VERSION: 0.0.2**
+**03/11/2018 VERSION: 0.0.2**
 
 Release for continued testing.
 
 - New features:
 
-    - Monte Carlo tool can be executed by `python -m safirpy.mc` in a terminal or command line console
-
-    - Monte Carlo tool can be executed by `python -m safirpy.mc` in a terminal or command line console
+    - Run a single SAFIR calculation by `python -m SAFIRshell.shell` in a terminal or command line console. [Thermal calculation or single \*.tem structural calculation]
 
 - Fixes:
 

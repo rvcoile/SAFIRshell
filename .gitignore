@@ -4,3 +4,7 @@
 ## ignore __pycache ##
 **/__pycache__/
 
+## gitignore release data ##
+build/
+dist/
+SAFIRshell.egg-info
