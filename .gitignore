@@ -1,0 +1,12 @@
+## .gitignore for SAFIRshell
+
+# ignore by default
+*
+*/
+*.*
+
+# list files for repository
+!.gitignore
+!LICENSE
+!README.md
+!RELEASE.md
