@@ -22,15 +22,6 @@ import os
 import subprocess
 import shutil
 
-# local function reads
-# NONE
-
-# distant function reads
-# directory="C:/Users/rvcoile/Google Drive/Research/Codes/Python3.6/REF/rvcpy"
-# sys.path.append(directory)
-# from PrintAuxiliary import Print_DataFrame
-
-
 ##############
 ## FUNCTION ##
 ##############
@@ -68,6 +59,7 @@ def SAFIR_exe(path,file):
 
 def SAFIR_type(file):
 	# returns type of *.in file: Thermal2D, Structural2D, Structural3D
+	# assumes standard *.in format (GiD) with analysis type on 2nd line
 
 	with open(file) as f:
 		line=f.readline() # first line
@@ -149,52 +141,5 @@ if __name__ == "__main__":
 	# temporary codes for debugging - activate as needed
 
 	else:
-
-		## TRIAL SAFIRtype ##
-		#####################
-		# ## system path SAFIR executable ##
-		# SAFIRpath="C:/SAFIR/SAFIR.exe"
-
-		# ## *.in file without extension ##
-		# # NOTES
-		# # *.in file path should not include a "."
-		# if SW_testcase==1:
-		# 	# temperature calculation - steel profile
-		# 	infile="C:/Users/rvcoile/Documents/SAFIR/SAFIRpyTest/3DsteelbeamPy/w21x44"
-		# 	# success confirmed
-		# if SW_testcase==2:
-		# 	# structural calculation - frame (concrete columns, steel beam) example case JHU training
-		# 	infile="C:/Users/rvcoile/Documents/SAFIR/SAFIRpyTest/3Dframe_mod/3dframe"
-		# if SW_testcase==3:
-		# 	# 2D structural calculation - concrete column - testcase ISO WI Probab
-		# 	infile="C:/Users/rvcoile/Documents/SAFIR/SAFIRpyTest/2Dcc/6MN_0mm0"
-		# ## add *.in extension ##
-		# infile+=".in"
-
-		# ## debug testing ##
-		# SAFIRtype=SAFIR_type(infile)
-
-		# print(SAFIRtype)
-
-		## TRIAL TEMfileIN ##
-		#####################
-
-		# # infile
-		# infile="C:\\Users\\rvcoile\\Documents\\SAFIR\\SAFIRpyTest\\2Dcc\\6MN_0mm0"
-		# infile+=".in"
-
-		# # path to infile folder
-		# # infilepath='\\'.join(infile.split('\\')[0:-1])
-		# # print("\nTesting")
-		# # print(infilepath)
-
-		# # *.tem file indentification
-		# temfilepath,temname=SAFIR_TEMinIN(infile)
-		# print(temfilepath)
-		# print(temname)
-		# # print(os.getcwd()+'\\'+temname)
-
-		# temtargetpath=os.getcwd()+'\\'+temname
-		# shutil.copy(temfilepath,temtargetpath)
 
 		os.remove(os.getcwd()+'\\comeback')
