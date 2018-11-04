@@ -9,9 +9,12 @@
 #####################
 ## REFERENCE PATHS ##
 #####################
+# Note: these should be read/readable from a reference document, e.g. *.yaml
 
 ## system path SAFIR executable ##
 SAFIRpath="C:/SAFIR/SAFIR.exe"
+## working dir ##
+workDir="C:\\Users\\rvcoile\\Documents\\Workers"
 
 ####################
 ## MODULE IMPORTS ##
@@ -21,6 +24,7 @@ SAFIRpath="C:/SAFIR/SAFIR.exe"
 import os
 import subprocess
 import shutil
+from time import time
 
 ##############
 ## FUNCTION ##
@@ -35,7 +39,10 @@ def SAFIR_run(file,path=SAFIRpath,SW_removeItem=False):
 
 	## Run calculation ##
 	## if Thermal2D ==> run calculation
-	if SAFIRtype=='Thermal2D': SAFIR_exe(path,file) # run SAFIR
+	if SAFIRtype=='Thermal2D':
+		TMPdir=createTMPdir()
+		tmpfile=copyFileToDir(file,TMPdir) # copy to TMPdir to avoid path length issues
+		SAFIR_exe(path,tmpfile) # run SAFIR in TMPdir
 	## else (Structural calculation) ==> determine and copy *.tem file to Python dir
 	else:
 		## move *.tem file to SAFIRpy working directory
@@ -48,6 +55,26 @@ def SAFIR_run(file,path=SAFIRpath,SW_removeItem=False):
 		## remove *.tem file from SAFIRpy directory - exception if directory equals original *.tem location
 		if SW_removeItem: os.remove(temtargetpath)
 		# if os.path.exists(os.getcwd()+'\\comeback'): os.remove(os.getcwd()+'\\comeback') # comeback removal - FAIL - administrator rights
+
+def createTMPdir():
+	# create TMPdir based on current time
+	TMPdir=workDir+'\\'+"{0}".format(time())[-5:] # TMPdir=workDir+'\\'+"TEST" # code for testing
+	
+	# create TMPdir
+	while os.path.isdir(TMPdir):
+		print("Existing")
+		TMPdir+='x' # is supposed to allow for multiprocessing - avoiding clash of TMP folders - to be confirmed
+	os.mkdir(TMPdir) # create directory
+
+	return TMPdir
+
+def copyFileToDir(infile,Dir):
+	# copy file to tmp directory
+
+	targetfile=Dir+'\\'+infile.split('\\')[-1]
+	shutil.copy(infile,targetfile)
+
+	return targetfile
 
 def SAFIR_exe(path,file):
 
@@ -93,7 +120,7 @@ if __name__ == "__main__":
 	## SWITCH FOR TESTING ##
 	########################
 
-	SW_testcase=4
+	SW_testcase=5
 	SW_debug=False
 
 
@@ -130,9 +157,12 @@ if __name__ == "__main__":
 		if SW_testcase==4:
 			# 2D structural calculation - concrete column - testcase ISO WI Probab
 			infile="C:\\Users\\rvcoile\\Documents\\SAFIR\\SAFIRpyTest\\modfileTest\\6MN_0mm0.in"
+		if SW_testcase==5:
+			# tmp test long path
+			infile="C:\\Users\\rvcoile\\Google Drive\\UGent\\Teaching\\2018-2019\\FEM\\projectSAFIR\\students\\G11-12\\G11\\1029_issue\\rerun\\slab170x1000.in"
 
 		## execution ##
-		SAFIR_run(SAFIRpath,infile)
+		SAFIR_run(infile)
 
 	###########
 	## DEBUG ##
@@ -142,4 +172,4 @@ if __name__ == "__main__":
 
 	else:
 
-		os.remove(os.getcwd()+'\\comeback')
+		copyFileToTMPdir()
