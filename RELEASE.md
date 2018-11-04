@@ -2,6 +2,18 @@
 
 ### VERSIONS
 
+**XX/11/2018 VERSION: 0.0.3**
+
+XXX.
+
+- New features:
+
+    - Run single SAFIR calculation immediately with [infile] argument by `python -m SAFIRshell.shell [infile]` in a terminal or command line console
+
+- Fixes:
+
+    - None
+
 **03/11/2018 VERSION: 0.0.2**
 
 Release for continued testing.

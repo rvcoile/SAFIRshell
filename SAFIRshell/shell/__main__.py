@@ -8,34 +8,32 @@
 # - acknowledgement Ian Fu, cfr. development PySFE/SAFIRpy
 #
 # 2018-11-03: version 0.0.1: first initialization
+# 2018-11-03: version 0.0.2: update allows to pass *.in file immediately with command "python -m SAFIRshell.shell [*.in]"
 
 
 import os
+import sys
 from SAFIRshell.runSAFIR import SAFIR_run
-from tkinter import filedialog, Tk, StringVar
+from tkinter import filedialog, Tk
 
 ##############
 ## FUNCTION ##
 ##############
 
-def run(path_input=None):
+def run(infile=None):
     ## run SAFIR calculation for given path
 
     ## Input file path
-    if path_input is None:
+    if infile is None:
         root = Tk()
         root.withdraw()
-        text_io = filedialog.askopenfile()
+        text_io = filedialog.askopenfile(title = "Select *.in file for SAFIR calculation")
         infile = text_io.name
         if infile == '':
             return -1
         else: print(infile)
 
     ## execution ##
-    ## overwrite default SAFIRpath and execute
-    # SAFIRpath="C:\\SAFIR\\SAFIR2016c0_proba.exe"
-    # SAFIR_run(infile,SAFIRpath)
-    # default execution
     SAFIR_run(infile)
 
 #########################
@@ -43,4 +41,12 @@ def run(path_input=None):
 #########################
 
 if __name__ == '__main__':
-    run()
+
+    n_arg=len(sys.argv)-1 # number of arguments passed with script
+    
+    # assign arguments
+    script=sys.argv[0] # script
+    infile=None if n_arg==0 else sys.argv[1] # first argument
+
+    # run SAFIR
+    run(infile)
