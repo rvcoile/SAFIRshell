@@ -37,14 +37,18 @@ def SAFIR_run(file,path=SAFIRpath,SW_removeItem=False):
 	## check type of SAFIR calcuation
 	SAFIRtype=SAFIR_type(file)
 
+	## Directories ##
+	TMPdir=createTMPdir() # temporary calculation directory
+	Dir='\\'.join(file.split('\\')[0:-1]) # original directory
+
 	## Run calculation ##
-	## if Thermal2D ==> run calculation
 	if SAFIRtype=='Thermal2D':
-		TMPdir=createTMPdir()
+		## if Thermal2D ==> run calculation
 		tmpfile=copyFileToDir(file,TMPdir) # copy to TMPdir to avoid path length issues
 		SAFIR_exe(path,tmpfile) # run SAFIR in TMPdir
-	## else (Structural calculation) ==> determine and copy *.tem file to Python dir
+		cleanPostCalc(tmpfile,TMPdir,Dir,SAFIRtype)
 	else:
+		## else (Structural calculation) ==> determine and copy *.tem file to Python dir
 		## move *.tem file to SAFIRpy working directory
 		temfilepath,temname=SAFIR_TEMinIN(file) # determine *.tem file (full path - *.in directory assumed)
 		# temtargetpath=os.getcwd()+'\\'+'tmp.tem'
@@ -55,6 +59,17 @@ def SAFIR_run(file,path=SAFIRpath,SW_removeItem=False):
 		## remove *.tem file from SAFIRpy directory - exception if directory equals original *.tem location
 		if SW_removeItem: os.remove(temtargetpath)
 		# if os.path.exists(os.getcwd()+'\\comeback'): os.remove(os.getcwd()+'\\comeback') # comeback removal - FAIL - administrator rights
+
+def cleanPostCalc(tmpfile,TMPdir,Dir,SAFIRtype):
+	# copy output files to original folder and remove TMPdir
+
+	# copy files
+	outfile=tmpfile[0:-3]+'.out'; copyFileToDir(outfile,Dir) # *.out file
+	xmlfile=tmpfile[0:-3]+'.XML'; copyFileToDir(xmlfile,Dir) # *.XML file
+	if SAFIRtype=='Thermal2D': temfile=tmpfile[0:-3]+'.tem'; copyFileToDir(temfile,Dir) # *.TEM file
+
+	# remove folder
+	shutil.rmtree(TMPdir)
 
 def createTMPdir():
 	# create TMPdir based on current time
@@ -121,7 +136,7 @@ if __name__ == "__main__":
 	########################
 
 	SW_testcase=5
-	SW_debug=False
+	SW_debug=True
 
 
 
@@ -172,4 +187,8 @@ if __name__ == "__main__":
 
 	else:
 
-		copyFileToTMPdir()
+		# tmp test long path
+		infile="C:\\Users\\rvcoile\\Google Drive\\UGent\\Teaching\\2018-2019\\FEM\\projectSAFIR\\students\\G11-12\\G11\\1029_issue\\rerun\\test\\slab170x1000.in"
+
+		## execution ##
+		SAFIR_run(infile)
