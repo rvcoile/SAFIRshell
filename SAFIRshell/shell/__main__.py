@@ -13,7 +13,8 @@
 
 import os
 import sys
-from SAFIRshell.runSAFIR import SAFIR_run
+# from SAFIRshell.runSAFIR import SAFIR_run
+from runSAFIR import SAFIR_run
 from tkinter import filedialog, Tk
 
 ##############
@@ -31,7 +32,9 @@ def run(infile=None):
         infile = text_io.name
         if infile == '':
             return -1
-        else: print(infile)
+    
+    # Print infile #
+    print("*.in file received : ", infile)
 
     ## execution ##
     SAFIR_run(infile)

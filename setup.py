@@ -8,7 +8,7 @@ setuptools.setup(
     version="0.0.3",
     author="Ruben Van Coile",
     author_email="ruben.vancoile@gmail.com",
-    description="SAFIR shell",
+    description="SAFIR shell correction",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/rvcoile/SAFIRshell",

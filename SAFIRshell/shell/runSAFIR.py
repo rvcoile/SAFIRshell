@@ -24,7 +24,7 @@ workDir="C:\\Users\\rvcoile\\Documents\\Workers"
 import os
 import subprocess
 import shutil
-from time import time
+from time import time,sleep
 
 ##############
 ## FUNCTION ##
@@ -32,33 +32,36 @@ from time import time
 
 def SAFIR_run(file,path=SAFIRpath,SW_removeItem=False):
 	# run SAFIR *.in file
-	#	copy *.tem file to Python directory in case of structural analysis
+	#	November 2018: SAFIR calculation performed in TMPdir to avoid path length issues
+
+	# canonical path
+	file=os.path.realpath(file)
 
 	## check type of SAFIR calcuation
 	SAFIRtype=SAFIR_type(file)
 
 	## Directories ##
+	Dir=os.path.dirname(file) # original directory
 	TMPdir=createTMPdir() # temporary calculation directory
-	Dir='\\'.join(file.split('\\')[0:-1]) # original directory
+	tmpfile=copyFileToDir(file,TMPdir) # copy to TMPdir to avoid path length issues
+	os.chdir(TMPdir)
 
 	## Run calculation ##
 	if SAFIRtype=='Thermal2D':
 		## if Thermal2D ==> run calculation
-		tmpfile=copyFileToDir(file,TMPdir) # copy to TMPdir to avoid path length issues
 		SAFIR_exe(path,tmpfile) # run SAFIR in TMPdir
 		cleanPostCalc(tmpfile,TMPdir,Dir,SAFIRtype)
 	else:
 		## else (Structural calculation) ==> determine and copy *.tem file to Python dir
 		## move *.tem file to SAFIRpy working directory
 		temfilepath,temname=SAFIR_TEMinIN(file) # determine *.tem file (full path - *.in directory assumed)
-		# temtargetpath=os.getcwd()+'\\'+'tmp.tem'
-		temtargetpath=os.getcwd()+'\\'+temname
+		temtargetpath=TMPdir+'\\'+temname
 		if temtargetpath!=temfilepath: shutil.copy(temfilepath,temtargetpath) # copy *.tem file to SAFIRpy working directory
 		## run SAFIR
-		SAFIR_exe(path,file)
-		## remove *.tem file from SAFIRpy directory - exception if directory equals original *.tem location
-		if SW_removeItem: os.remove(temtargetpath)
-		# if os.path.exists(os.getcwd()+'\\comeback'): os.remove(os.getcwd()+'\\comeback') # comeback removal - FAIL - administrator rights
+		SAFIR_exe(path,tmpfile)
+		cleanPostCalc(tmpfile,TMPdir,Dir,SAFIRtype)
+
+	
 
 def cleanPostCalc(tmpfile,TMPdir,Dir,SAFIRtype):
 	# copy output files to original folder and remove TMPdir
@@ -68,8 +71,19 @@ def cleanPostCalc(tmpfile,TMPdir,Dir,SAFIRtype):
 	xmlfile=tmpfile[0:-3]+'.XML'; copyFileToDir(xmlfile,Dir) # *.XML file
 	if SAFIRtype=='Thermal2D': temfile=tmpfile[0:-3]+'.tem'; copyFileToDir(temfile,Dir) # *.TEM file
 
+	# return to original directory
+	os.chdir(Dir)
+	
 	# remove folder
 	shutil.rmtree(TMPdir)
+	# # remove folder - with retry
+	# try: 
+	# 	shutil.rmtree(TMPdir)
+	# except:
+	# 	sleep(5)
+	# 	print("Second trial to remove TMPdir")
+	# 	try: os.rmdir(TMPdir)
+	# 	except: pass
 
 def createTMPdir():
 	# create TMPdir based on current time
