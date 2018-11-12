@@ -49,6 +49,7 @@ def SAFIR_run(file,path=SAFIRpath,SW_removeItem=False):
 	## Run calculation ##
 	if SAFIRtype=='Thermal2D':
 		## if Thermal2D ==> run calculation
+		print("\n###########################################\n## Activate SAFIR Thermal 2D calculation ##\n###########################################\n")
 		SAFIR_exe(path,tmpfile) # run SAFIR in TMPdir
 		cleanPostCalc(tmpfile,TMPdir,Dir,SAFIRtype)
 	else:
