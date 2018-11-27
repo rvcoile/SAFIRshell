@@ -13,8 +13,8 @@
 
 import os
 import sys
-# from SAFIRshell.runSAFIR import SAFIR_run
-from runSAFIR import SAFIR_run
+from SAFIRshell.runSAFIR import SAFIR_run
+# from runSAFIR import SAFIR_run
 from tkinter import filedialog, Tk
 
 ##############

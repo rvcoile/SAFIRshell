@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="SAFIRshell",
-    version="0.0.3",
+    version="0.0.4",
     author="Ruben Van Coile",
     author_email="ruben.vancoile@gmail.com",
     description="SAFIR shell correction",

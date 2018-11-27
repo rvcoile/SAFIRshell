@@ -2,9 +2,14 @@
 
 ### VERSIONS
 
-**XX/11/2018 VERSION: 0.0.3**
+**27/11/2018 VERSION: 0.0.4**
 
-XXX.
+- New features:
+
+    - runSAFIR.py - f[SAFIR_run]
+    Perform calculation in hardcoded workDir_default, or pass name to SAFIR_run as optional argument workDir = ''
+
+**12/11/2018 VERSION: 0.0.3**
 
 - New features:
 
