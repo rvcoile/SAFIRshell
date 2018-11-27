@@ -87,6 +87,11 @@ def cleanPostCalc(tmpfile,TMPdir,Dir,SAFIRtype):
 	# 	except: pass
 
 def createTMPdir(workDir):
+	if workDir is None: workDir=workDir_default
+	if not os.path.isdir(workDir): 
+		try: os.mkdir(workDir) # check of workDir_default exists
+		except: print("workDir could not be generated")
+
 	# create TMPdir based on current time
 	TMPdir=workDir+'\\'+"{0}".format(time())[-5:] # TMPdir=workDir+'\\'+"TEST" # code for testing
 	
@@ -150,8 +155,8 @@ if __name__ == "__main__":
 	## SWITCH FOR TESTING ##
 	########################
 
-	SW_testcase=5
-	SW_debug=True
+	SW_testcase=4
+	SW_debug=False
 
 
 
@@ -206,4 +211,4 @@ if __name__ == "__main__":
 		infile="C:\\Users\\rvcoile\\Google Drive\\UGent\\Teaching\\2018-2019\\FEM\\projectSAFIR\\students\\G11-12\\G11\\1029_issue\\rerun\\test\\slab170x1000.in"
 
 		## execution ##
-		SAFIR_run(infile)
+		SAFIR_run(infile,workDir="C:\\Users\\rvcoile\\Documents\\Workers")
