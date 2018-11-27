@@ -14,7 +14,7 @@
 ## system path SAFIR executable ##
 SAFIRpath="C:/SAFIR/SAFIR.exe"
 ## working dir ##
-workDir="C:\\Users\\rvcoile\\Documents\\Workers"
+workDir_default="C:\\Users\\rvcoile\\Workers" # should be set in separate file and read at start of calculation?
 
 ####################
 ## MODULE IMPORTS ##
@@ -30,7 +30,7 @@ from time import time
 ## FUNCTION ##
 ##############
 
-def SAFIR_run(file,path=SAFIRpath,SW_removeItem=False):
+def SAFIR_run(file,path=SAFIRpath,SW_removeItem=False,workDir=None):
 	# run SAFIR *.in file
 	#	copy *.tem file to Python directory in case of structural analysis
 
@@ -38,7 +38,7 @@ def SAFIR_run(file,path=SAFIRpath,SW_removeItem=False):
 	SAFIRtype=SAFIR_type(file)
 
 	## Directories ##
-	TMPdir=createTMPdir() # temporary calculation directory
+	TMPdir=createTMPdir(workDir) # temporary calculation directory
 	Dir='\\'.join(file.split('\\')[0:-1]) # original directory
 
 	## Run calculation ##
@@ -71,8 +71,13 @@ def cleanPostCalc(tmpfile,TMPdir,Dir,SAFIRtype):
 	# remove folder
 	shutil.rmtree(TMPdir)
 
-def createTMPdir():
+def createTMPdir(workDir):
 	# create TMPdir based on current time
+	if workDir is None: workDir=workDir_default
+	if not os.path.isdir(workDir): 
+		try: os.mkdir(workDir) # check of workDir_default exists
+		except: print("workDir could not be generated")
+		
 	TMPdir=workDir+'\\'+"{0}".format(time())[-5:] # TMPdir=workDir+'\\'+"TEST" # code for testing
 	
 	# create TMPdir
@@ -135,8 +140,8 @@ if __name__ == "__main__":
 	## SWITCH FOR TESTING ##
 	########################
 
-	SW_testcase=5
-	SW_debug=True
+	SW_testcase=4
+	SW_debug=False
 
 
 
@@ -192,3 +197,4 @@ if __name__ == "__main__":
 
 		## execution ##
 		SAFIR_run(infile)
+		# SAFIR_run(infile,workDir="C:\\Users\\rvcoile\\Documents\\Workers")
