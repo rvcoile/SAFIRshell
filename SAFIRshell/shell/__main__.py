@@ -45,11 +45,12 @@ def run(infile=None):
 
 if __name__ == '__main__':
 
+    ## allow to pass arguments to call of function
     n_arg=len(sys.argv)-1 # number of arguments passed with script
     
-    # assign arguments
+    ## assign arguments (file to run) or assign None as default
     script=sys.argv[0] # script
     infile=None if n_arg==0 else sys.argv[1] # first argument
 
-    # run SAFIR
+    ## run SAFIR
     run(infile)

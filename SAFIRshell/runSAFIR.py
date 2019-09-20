@@ -155,7 +155,7 @@ if __name__ == "__main__":
 	## SWITCH FOR TESTING ##
 	########################
 
-	SW_testcase=4
+	SW_testcase=6
 	SW_debug=False
 
 
@@ -195,6 +195,10 @@ if __name__ == "__main__":
 		if SW_testcase==5:
 			# tmp test long path
 			infile="C:\\Users\\rvcoile\\Google Drive\\UGent\\Teaching\\2018-2019\\FEM\\projectSAFIR\\students\\G11-12\\G11\\1029_issue\\rerun\\slab170x1000.in"
+		if SW_testcase==6:
+			# tmp test 
+			infile="C:\\Users\\rvcoile\\Documents\\SAFIR\\trials\\infileGen\\Test01.in"
+			print(infile)
 
 		## execution ##
 		SAFIR_run(infile)
@@ -208,7 +212,7 @@ if __name__ == "__main__":
 	else:
 
 		# tmp test long path
-		infile="C:\\Users\\rvcoile\\Google Drive\\UGent\\Teaching\\2018-2019\\FEM\\projectSAFIR\\students\\G11-12\\G11\\1029_issue\\rerun\\test\\slab170x1000.in"
+		infile="C:\\Users\\rvcoile\\Documents\\Workers\\Test02\\00000_0001.in"
 
 		## execution ##
 		SAFIR_run(infile,workDir="C:\\Users\\rvcoile\\Documents\\Workers")
